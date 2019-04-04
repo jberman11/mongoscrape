@@ -16,6 +16,17 @@ var PORT = 3000;
 // Initialize Express
 var app = express();
 
+
+
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://jbdb:B3rm4n%211%0A@mycluster-lh5ii.mongodb.net/test?retryWrites=true";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
 // Configure middleware
 
 // Use morgan logger for logging requests
@@ -27,7 +38,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/mongHeadlines", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/mongoscrape");
+//mongoose.connect("mongodb+srv://jbdb:B3rm4n%211%0A@mycluster-lh5ii.mongodb.net/test?retryWrites=true", { useNewUrlParser: true });
 
 
 var exphbs = require("express-handlebars");
@@ -81,7 +93,7 @@ app.get("/scrape", function(req, res) {
     });
 
     // Send a message to the client
-    res.send("Scrape Complete");
+    res.redirect("/");
   });
 });
 
